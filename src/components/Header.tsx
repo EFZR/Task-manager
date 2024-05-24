@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom"
-import { useState } from "react"
 import { BiMoon, BiSun, BiUser, BiSearch } from "react-icons/bi"
+import useUI from "../hooks/useUI"
 import useDarkTheme from "../hooks/useDarkTheme"
 import "../styles/Header.css"
 
 export default function Header() {
-  const [toggleSearch, setToggleSearch] = useState<boolean>(false)
-  const [darkTheme, setDarkTheme] = useState<boolean>(false)
-  useDarkTheme(darkTheme)
+  const { toggle, switchToggle, theme, switchTheme } = useUI()
+  useDarkTheme(theme)
 
   return (
     <header className="header">
@@ -19,25 +18,21 @@ export default function Header() {
 
         <div className="nav__actions">
           <div className="nav__filter">
-            <BiSearch className="nav__icon-search" onClick={() => setToggleSearch(!toggleSearch)} />
-            <input type="text" placeholder="Search..." className={`nav__input-search ${toggleSearch && "nav__input-search-active"}`} />
+            <BiSearch className="nav__icon-search" onClick={switchToggle} />
+            <input type="text" placeholder="Search..." className={`nav__input-search ${toggle && "nav__input-search-active"}`} />
           </div>
-          {darkTheme ? (
+          <BiUser className="nav__icon" />
+          {theme ? (
             <BiSun
               className="nav__icon"
-              onClick={() => {
-                setDarkTheme(!darkTheme);
-              }}
+              onClick={switchTheme}
             />
           ) : (
             <BiMoon
               className="nav__icon"
-              onClick={() => {
-                setDarkTheme(!darkTheme);
-              }}
+              onClick={switchTheme}
             />
           )}
-          <BiUser className="nav__icon" />
         </div>
       </nav>
     </header>

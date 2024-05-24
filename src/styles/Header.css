@@ -57,6 +57,11 @@
   transition: color 0.4s, transform 0.5s;
 }
 
+.nav__icon:hover,
+.nav__icon-search:hover{
+  color: var(--first-color);
+}
+
 .nav__filter {
   display: flex;
   align-items: center;
@@ -86,4 +91,10 @@
 
 .nav__icon-search:hover {
   transform: rotate(1turn);
+}
+
+/* Dark Theme Styles */
+
+.dark-theme .nav__input-search {
+  color: var(--white-color);
 }

@@ -1,8 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;900&display=swap"); */
-/* @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;900&display=swap"); */
-/* @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;900&display=swap"); */
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;900&display=swap");
-/* @import url("https://fonts.googleapis.com/css2?family=Briem+Hand:wght@400;500;600;900&display=swap"); */
 
 :root {
   --header-height: 5rem;
@@ -10,7 +6,7 @@
   /* Colors: Monocromatic Pattern */
   --hue: 224;
   --first-color: hsl(var(--hue), 90%, 60%);
-  --first-color-alt: hsl(var(--hue), 82%, 56%);
+  --first-color-alt: hsl(var(--hue), 78%, 45%);
   --first-color-light: hsl(var(--hue), 40%, 80%);
   --title-color: hsl(var(--hue), 24%, 16%);
   --text-color: hsl(var(--hue), 8%, 45%);
@@ -135,7 +131,7 @@ img {
 }
 
 .section {
-  padding-block: 2rem 1rem;
+  padding-block: 3rem 1rem;
 }
 
 @media screen and (min-width: 1150px) {
@@ -146,7 +142,7 @@ img {
 
 .section__title {
   font-size: var(--h1-font-size);
-  text-align: start;
+  text-align: center;
   margin-bottom: 2rem;
 }
 

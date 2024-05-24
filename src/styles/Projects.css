@@ -1,0 +1,44 @@
+.tasks__container {
+  row-gap: 2rem;
+}
+
+@media screen and (min-width: 576px) {
+  .tasks__container {
+    grid-template-columns: 350px;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .tasks__container {
+    grid-template-columns: repeat(2, 320px);
+    justify-content: center;
+    gap: 2rem
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .tasks__container {
+    grid-template-columns: repeat(3, 340px);
+    justify-content: center;
+    gap: 2rem
+  }
+}
+
+.task__card {
+  row-gap: 0.5rem;
+  background-color: var(--container-color);
+  padding: 1.3rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 12px 24px var(--shadow-color);;
+}
+
+.task__card span {
+  text-align: end;
+  font-weight: var(--font-semi-bold);
+}
+
+.task__card button {
+  margin-top: 0.7rem;
+  text-transform: capitalize;
+}
