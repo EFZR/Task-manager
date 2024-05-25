@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { formatInputDate } from "../helpers";
-import { Project } from "../types";
+import { Column, Project } from "../types";
 
 export const projects: Project[] = [
   {
@@ -17,20 +17,92 @@ export const projects: Project[] = [
     tasks: [
       {
         id: uuidv4(),
-        title: "Design Campaign",
-        description: "Design the overall campaign",
+        title: "Task 1",
+        description: "Description for task 1",
         state: "todo",
       },
       {
         id: uuidv4(),
-        title: "Create Content",
-        description: "Create content for the campaign",
+        title: "Task 2",
+        description: "Description for task 2",
         state: "process",
       },
       {
         id: uuidv4(),
-        title: "Launch Campaign",
-        description: "Launch the campaign",
+        title: "Task 3",
+        description: "Description for task 3",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 4",
+        description: "Description for task 4",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 5",
+        description: "Description for task 5",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 6",
+        description: "Description for task 6",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 7",
+        description: "Description for task 7",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 8",
+        description: "Description for task 8",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 9",
+        description: "Description for task 9",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 10",
+        description: "Description for task 10",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 11",
+        description: "Description for task 11",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 12",
+        description: "Description for task 12",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 13",
+        description: "Description for task 13",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 14",
+        description: "Description for task 14",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 15",
+        description: "Description for task 15",
         state: "done",
       },
     ],
@@ -49,20 +121,92 @@ export const projects: Project[] = [
     tasks: [
       {
         id: uuidv4(),
-        title: "Market Research",
-        description: "Conduct market research",
+        title: "Task 1",
+        description: "Description for task 1",
         state: "todo",
       },
       {
         id: uuidv4(),
-        title: "Product Design",
-        description: "Design the new product",
+        title: "Task 2",
+        description: "Description for task 2",
         state: "process",
       },
       {
         id: uuidv4(),
-        title: "Product Launch",
-        description: "Launch the new product",
+        title: "Task 3",
+        description: "Description for task 3",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 4",
+        description: "Description for task 4",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 5",
+        description: "Description for task 5",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 6",
+        description: "Description for task 6",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 7",
+        description: "Description for task 7",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 8",
+        description: "Description for task 8",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 9",
+        description: "Description for task 9",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 10",
+        description: "Description for task 10",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 11",
+        description: "Description for task 11",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 12",
+        description: "Description for task 12",
+        state: "done",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 13",
+        description: "Description for task 13",
+        state: "todo",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 14",
+        description: "Description for task 14",
+        state: "process",
+      },
+      {
+        id: uuidv4(),
+        title: "Task 15",
+        description: "Description for task 15",
         state: "done",
       },
     ],
@@ -172,4 +316,24 @@ export const projects: Project[] = [
     ],
   },
   // ... more projects
+];
+
+export const columns: Column[] = [
+  {
+    id: "todo",
+    title: "To Do",
+    taskIds: [],
+  },
+
+  {
+    id: "process",
+    title: "Process",
+    taskIds: [],
+  },
+
+  {
+    id: "done",
+    title: "Done",
+    taskIds: [],
+  },
 ];

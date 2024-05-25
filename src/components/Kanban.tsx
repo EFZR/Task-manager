@@ -1,74 +1,39 @@
+import { DragDropContext } from "@hello-pangea/dnd";
+import { useCallback } from "react";
 import useTask from "../hooks/useTask";
+import KanbanList from "./KanbanList";
+import KanbanCard from "./KanbanCard";
 import "../styles/Kanban.css";
 
 export default function Kanban() {
   const { currentProject } = useTask();
   const { tasks } = currentProject;
+  const onDragEnd = useCallback(() => {}, []);
 
   return (
-    <div className="kanban__container grid">
-      <div className="kanban__slider">
-        <div className="kanban__list grid">
-          <div className="kanban__list-header">
-            <h3 className="kanban__list-title">To Do</h3>
-          </div>
-          {tasks.map((task) => {
-            if (task.state === "todo")
-              return (
-                <article className="kanban__card grid" key={task.id}>
-                  <div className="color__flag"></div>
-                  <h3 className="kanban__card-title">{task.title}</h3>
-                  <p>{task.description}</p>
-                </article>
-              );
-          })}
-          <div className="kanban__list-footer">
-            <button type="button" className="button kanban__card-button">
-              Add a Card
-            </button>
-          </div>
-        </div>
-        <div className="kanban__list grid">
-          <div className="kanban__list-header">
-            <h3 className="kanban__list-title">In Process</h3>
-          </div>
-          {tasks.map((task) => {
-            if (task.state == "process")
-              return (
-                <article className="kanban__card grid" key={task.id}>
-                  <div className="color__flag"></div>
-                  <h3 className="kanban__card-title">{task.title}</h3>
-                  <p>{task.description}</p>
-                </article>
-              );
-          })}
-          <div className="kanban__list-footer">
-            <button type="button" className="button kanban__card-button">
-              Add a Card
-            </button>
-          </div>
-        </div>
-        <div className="kanban__list grid">
-          <div className="kanban__list-header">
-            <h3 className="kanban__list-title">Done</h3>
-          </div>
-          {tasks.map((task) => {
-            if (task.state == "done")
-              return (
-                <article className="kanban__card grid" key={task.id}>
-                  <div className="color__flag"></div>
-                  <h3 className="kanban__card-title">{task.title}</h3>
-                  <p>{task.description}</p>
-                </article>
-              );
-          })}
-          <div className="kanban__list-footer">
-            <button type="button" className="button kanban__card-button">
-              Add a Card
-            </button>
-          </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="kanban__container grid">
+        <div className="kanban__slider">
+          <KanbanList name="To Do">
+            {tasks.map((task, index) => {
+              if (task.state === "todo")
+                return <KanbanCard key={task.id} task={task} index={index} />;
+            })}
+          </KanbanList>
+          <KanbanList name="Process">
+            {tasks.map((task, index) => {
+              if (task.state === "process")
+                return <KanbanCard key={task.id} task={task} index={index} />;
+            })}
+          </KanbanList>
+          <KanbanList name="Done">
+            {tasks.map((task, index) => {
+              if (task.state === "done")
+                return <KanbanCard key={task.id} task={task} index={index} />;
+            })}
+          </KanbanList>
         </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 }

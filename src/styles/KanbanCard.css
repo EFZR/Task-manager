@@ -1,0 +1,19 @@
+.kanban__card {
+  background-color: var(--body-color);
+  padding: 0.2rem;
+  border-radius: 0.3rem;
+  row-gap: 0.5rem;
+}
+
+@media screen and (min-width: 1150px) {
+  .kanban__card {
+    padding: 1rem;
+  }
+}
+
+.color__flag {
+  background-color: var(--first-color);
+  padding: 3px;
+  width: 20%;
+  border-radius: 0.3rem;
+}
