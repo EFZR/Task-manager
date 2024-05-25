@@ -26,7 +26,7 @@
 }
 
 .task__card {
-  row-gap: 0.5rem;
+  row-gap: 0.8rem;
   background-color: var(--container-color);
   padding: 1.3rem;
   border-radius: 0.3rem;
@@ -38,7 +38,8 @@
   font-weight: var(--font-semi-bold);
 }
 
-.task__card button {
+.task__card .button {
   margin-top: 0.7rem;
   text-transform: capitalize;
+  text-align: center;
 }

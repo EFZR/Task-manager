@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useTask from "../hooks/useTask"
 import { formatDate } from "../helpers";
 import "../styles/Projects.css"
@@ -18,7 +19,7 @@ export default function Projects() {
           <span>
             {formatDate(project.endDate.toString())}
           </span>
-          <button className="button">ver mas...</button>
+          <Link to="/workspace" className="button">ver mas...</Link>
         </article>
       ))}
     </div>

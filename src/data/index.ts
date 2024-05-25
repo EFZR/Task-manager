@@ -6,7 +6,7 @@ export const projects: Project[] = [
     id: uuidv4(),
     name: "Launch Marketing Campaign",
     description: "A task to launch a new marketing campaign.",
-    endDate: new Date('2024-12-01'),
+    endDate: new Date('2024-12-01').toDateString(),
     complete: false,
     collaborators: [
       { username: "Neymar" },
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     id: uuidv4(),
     name: "Develop New Website",
     description: "A project to develop a new corporate website.",
-    endDate: new Date('2024-10-15'),
+    endDate: new Date('2024-10-15').toDateString(),
     complete: false,
     collaborators: [
       { username: "Alice" },
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     id: uuidv4(),
     name: "Organize Conference",
     description: "A project to organize an annual tech conference.",
-    endDate: new Date('2024-09-20'),
+    endDate: new Date('2024-09-20').toDateString(),
     complete: false,
     collaborators: [
       { username: "Dave" },
@@ -123,7 +123,7 @@ export const projects: Project[] = [
     id: uuidv4(),
     name: "Implement CRM System",
     description: "A project to implement a new CRM system.",
-    endDate: new Date('2025-01-31'),
+    endDate: new Date('2025-01-31').toDateString(),
     complete: false,
     collaborators: [
       { username: "Grace" },
@@ -172,7 +172,7 @@ export const projects: Project[] = [
     id: uuidv4(),
     name: "Product Launch",
     description: "A project to launch a new product line.",
-    endDate: new Date('2024-11-30'),
+    endDate: new Date('2024-11-30').toDateString(),
     complete: false,
     collaborators: [
       { username: "Jack" },

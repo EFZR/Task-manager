@@ -2,11 +2,13 @@ export type Project = {
   id: string,
   name: string,
   description: string,
-  endDate: Date,
+  endDate: string,
   complete: Boolean,
   collaborators: Collaborator[]
   tasks: Task[]
 }
+
+export type NewProject = Pick<Project, "name" | "description" | "endDate" | "collaborators">
 
 export type User = {
   username: string,
