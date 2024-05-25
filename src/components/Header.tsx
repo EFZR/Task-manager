@@ -39,12 +39,12 @@ export default function Header() {
               }`}
             />
           </div>
-          <BiUser className="nav__icon" />
           {theme ? (
             <BiSun className="nav__icon" onClick={switchTheme} />
           ) : (
             <BiMoon className="nav__icon" onClick={switchTheme} />
           )}
+          <BiUser className="nav__icon" />
         </div>
       </nav>
     </header>

@@ -138,6 +138,19 @@ export const TaskReducer = (
   }
 
   if (action.type === "close-project-modal") {
+    if (state.activeId) {
+      return {
+        ...state,
+        projectModal: false,
+        projectForm: {
+          name: state.currentProject.name,
+          description: state.currentProject.description,
+          collaborators: state.currentProject.collaborators,
+          endDate: state.currentProject.endDate,
+        },
+      };
+    }
+
     return {
       ...state,
       projectModal: false,

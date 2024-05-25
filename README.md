@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+# 🚀 Task Master
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Task Master es una innovadora 🌐 aplicación web que te permite organizar tus proyectos 📋 y tareas 📝 de una manera sencilla y eficiente.
 
-Currently, two official plugins are available:
+🎯 **Facilidad de uso**: Una de los aspectos que más se tomó en cuenta al momento de desarrollar esta aplicación fue la facilidad de uso. No necesitas ser un experto en tecnología para empezar a organizar tus tareas y proyectos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👥 **Experiencia del usuario**: Con una interfaz intuitiva y moderna, Task Master ofrece una experiencia de usuario agradable y eficiente.
 
-## Expanding the ESLint configuration
+Así que, ¿qué estás esperando? ¡Comienza a usar Task Master hoy y lleva tu productividad al siguiente nivel! 🚀
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🛠️ Tecnologías Utilizadas
 
-- Configure the top-level `parserOptions` property like this:
+- [**Vite**](https://vitejs.dev/): Una herramienta de construcción que proporciona un desarrollo más rápido y un rendimiento de producción más eficiente.
+- [**React**](https://es.reactjs.org/): Una biblioteca de JavaScript para construir interfaces de usuario. ⚛️
+- [**Typescript**](https://www.typescriptlang.org/): Un superconjunto de JavaScript que añade tipado estático y objetos basados en clases. 📘
+- [**Vanilla CSS**](https://developer.mozilla.org/es/docs/Web/CSS): Un lenguaje de hojas de estilo utilizado para describir la presentación de un documento escrito en HTML. 🎨
+- [**React-Icons**](https://react-icons.github.io/react-icons/): Una librería de iconos para React. 📚
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Instalación y ejecución 📦
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Para instalar y ejecutar este proyecto, sigue los siguientes pasos:
+
+1. Clona el repositorio: `git clone https://github.com/EFZR/Task-manager.git`
+2. Navega al directorio del proyecto: `cd Task-manager`
+3. Instala las dependencias: `npm install`
+4. Ejecuta el proyecto: `npm run dev`
+
+Ahora, la aplicación debería estar corriendo en `http://localhost:5173`.
