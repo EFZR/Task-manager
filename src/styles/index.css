@@ -148,12 +148,6 @@ img {
   margin-bottom: 2rem;
 }
 
-@media screen and (min-width: 1150px) {
-  .section__title {
-    margin-bottom: 3.5rem;
-  }
-}
-
 .main {
   overflow: hidden;
 }
