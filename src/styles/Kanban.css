@@ -63,6 +63,7 @@
   .kanban__list {
     flex: 0 0 350px;
     max-height: 50vh;
+    padding-inline: 1rem;
   }
 }
 
@@ -91,27 +92,23 @@
 }
 
 .kanban__card-button {
+  width: 100%;
+  border-radius: 0.3rem;
   display: flex;
   align-items: center;
-  column-gap: 1rem;
-  width: 100%;
-  padding: 0.2rem;
-  border-radius: 0.3rem;
-}
-
-.kanban__card-button:hover {
-  background-color: var(--white-color);
-}
-
-.kanban__card-icon {
-  font-size: 1rem;
 }
 
 .kanban__card {
-  background-color: var(--white-color);
+  background-color: var(--body-color);
   padding: 0.2rem;
   border-radius: 0.3rem;
   row-gap: 0.5rem;
+}
+
+@media screen and (min-width: 1150px) {
+  .kanban__card {
+    padding: 1rem;
+  }
 }
 
 .color__flag {
@@ -119,4 +116,10 @@
   padding: 3px;
   width: 20%;
   border-radius: 0.3rem;
+}
+
+/* Dark Theme styles */
+
+.dark-theme.kanban__card-button {
+  color: var(--white-color);
 }

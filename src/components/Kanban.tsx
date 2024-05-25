@@ -21,8 +21,7 @@ export default function Kanban() {
             </article>
           ))}
           <div className="kanban__list-footer">
-            <button type="button" className="kanban__card-button">
-              <BiPlus className="kanban__card-icon" />
+            <button type="button" className="button kanban__card-button">
               Add a Card
             </button>
           </div>
@@ -46,8 +45,7 @@ export default function Kanban() {
             </article>
           ))}
           <div className="kanban__list-footer">
-            <button type="button" className="kanban__card-button">
-              <BiPlus className="kanban__card-icon" />
+            <button type="button" className="button kanban__card-button">
               Add a Card
             </button>
           </div>
@@ -64,8 +62,7 @@ export default function Kanban() {
             </article>
           ))}
           <div className="kanban__list-footer">
-            <button type="button" className="kanban__card-button">
-              <BiPlus className="kanban__card-icon" />
+            <button type="button" className="button kanban__card-button">
               Add a Card
             </button>
           </div>
