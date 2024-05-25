@@ -36,6 +36,7 @@
   font-family: var(--logo-font);
   font-size: 1.6rem;
   display: inline-block;
+  text-transform: capitalize;
   margin-left: 1.4rem;
 }
 
@@ -56,7 +57,7 @@
   color: var(--title-color);
   font-size: 1.25rem;
   cursor: pointer;
-  transition: color 0.4s, transform 0.5s;
+  transition: color 0.4s, transform 0.3s;
 }
 
 .nav__icon:hover,
@@ -89,10 +90,6 @@
     width: 14rem;
     padding-inline: 1.2rem;
   }
-}
-
-.nav__icon-search:hover {
-  transform: rotate(1turn);
 }
 
 /* Dark Theme Styles */

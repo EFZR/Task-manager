@@ -5,13 +5,19 @@ import "../styles/Header.css";
 import useTask from "../hooks/useTask";
 
 export default function Header() {
-  const { toggleFilter, switchToggleFilter, theme, switchTheme } = useTask();
+  const {
+    toggleFilter,
+    switchToggleFilter,
+    theme,
+    switchTheme,
+    clean,
+  } = useTask();
   useDarkTheme(theme);
 
   return (
     <header className="header">
       <nav className="nav container">
-        <Link to="/" className="nav__logo">
+        <Link to="/" className="nav__logo" onClick={clean}>
           Task
           <br />
           <span>Master</span>

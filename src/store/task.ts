@@ -2,6 +2,8 @@ import { ChangeEvent } from "react";
 import { projects } from "../data";
 import { Collaborator, NewProject, Project } from "../types";
 
+// TODO: Establish a relationship between each collaborator and their corresponding user entity
+
 export type TaskActions =
   | { type: "add-project"; payload: { project: Project } }
   | { type: "switch-toggle-filter" }
@@ -12,6 +14,7 @@ export type TaskActions =
       type: "handle-project-form";
       payload: { e: ChangeEvent<HTMLInputElement> };
     }
+  | { type: "clean" }
   | {
       type: "add-collaborator";
       payload: { username: Collaborator["username"] };
@@ -19,6 +22,14 @@ export type TaskActions =
   | {
       type: "remove-collaborator";
       payload: { username: Collaborator["username"] };
+    }
+  | {
+      type: "current-project";
+      payload: { project: Project };
+    }
+  | {
+      type: "current-project-form";
+      payload: { project: Project };
     };
 
 export type TaskState = {
@@ -27,6 +38,25 @@ export type TaskState = {
   theme: boolean;
   projectModal: boolean;
   projectForm: NewProject;
+  currentProject: Project;
+  activeId: Project["id"];
+};
+
+export const intialProjectForm: NewProject = {
+  name: "",
+  collaborators: [],
+  description: "",
+  endDate: "",
+};
+
+export const initialProject: Project = {
+  id: "",
+  name: "",
+  collaborators: [],
+  complete: false,
+  description: "",
+  endDate: "",
+  tasks: [],
 };
 
 export const initialState: TaskState = {
@@ -34,12 +64,9 @@ export const initialState: TaskState = {
   toggleFilter: false,
   theme: false,
   projectModal: false,
-  projectForm: {
-    name: "",
-    description: "",
-    endDate: "",
-    collaborators: [],
-  },
+  projectForm: intialProjectForm,
+  currentProject: initialProject,
+  activeId: "",
 };
 
 export const TaskReducer = (
@@ -47,17 +74,46 @@ export const TaskReducer = (
   action: TaskActions
 ) => {
   if (action.type === "add-project") {
-    return {
-      ...state,
-      projects: [...state.projects, action.payload.project],
-      projectModal: false,
-      projectForm: {
-        name: "",
-        description: "",
-        endDate: "",
-        collaborators: [],
-      },
-    };
+    // Edit project
+    if (state.activeId) {
+      const updProjects = state.projects.map((project) => {
+        if (project.id === state.activeId) {
+          return action.payload.project;
+        }
+        return project;
+      });
+
+      return {
+        ...state,
+        projects: updProjects,
+        projectModal: false,
+        currentProject: action.payload.project,
+        activeId: action.payload.project.id,
+        projectForm: {
+          name: action.payload.project.name,
+          endDate: action.payload.project.endDate,
+          collaborators: action.payload.project.collaborators,
+          description: action.payload.project.description,
+        },
+      };
+    }
+
+    // Save Project
+    else {
+      return {
+        ...state,
+        projects: [...state.projects, action.payload.project],
+        projectModal: false,
+        currentProject: action.payload.project,
+        activeId: action.payload.project.id,
+        projectForm: {
+          name: action.payload.project.name,
+          endDate: action.payload.project.endDate,
+          collaborators: action.payload.project.collaborators,
+          description: action.payload.project.description,
+        },
+      };
+    }
   }
 
   if (action.type === "switch-theme") {
@@ -70,7 +126,7 @@ export const TaskReducer = (
   if (action.type === "switch-toggle-filter") {
     return {
       ...state,
-      toggle: !state.toggleFilter,
+      toggleFilter: !state.toggleFilter,
     };
   }
 
@@ -102,6 +158,15 @@ export const TaskReducer = (
     };
   }
 
+  if (action.type === "clean") {
+    return {
+      ...state,
+      projectForm: intialProjectForm,
+      currentProject: initialProject,
+      activeId: "",
+    };
+  }
+
   if (action.type === "add-collaborator") {
     if (action.payload.username === "") {
       return state;
@@ -129,6 +194,26 @@ export const TaskReducer = (
       projectForm: {
         ...state.projectForm,
         collaborators: updateCollaborators,
+      },
+    };
+  }
+
+  if (action.type === "current-project") {
+    return {
+      ...state,
+      currentProject: action.payload.project,
+      activeId: action.payload.project.id,
+    };
+  }
+
+  if (action.type === "current-project-form") {
+    return {
+      ...state,
+      projectForm: {
+        name: action.payload.project.name,
+        endDate: action.payload.project.endDate,
+        collaborators: action.payload.project.collaborators,
+        description: action.payload.project.description,
       },
     };
   }

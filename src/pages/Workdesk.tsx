@@ -1,5 +1,3 @@
-import CreateButton from "../components/CreateButton"
-import ProjectModal from "../components/ProjectModal"
 import Projects from "../components/Projects"
 
 export default function Workdesk() {
@@ -11,8 +9,6 @@ export default function Workdesk() {
           <Projects />
         </section>
       </div>
-      <CreateButton />
-      <ProjectModal />
     </>
   )
 }

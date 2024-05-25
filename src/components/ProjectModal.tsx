@@ -1,12 +1,12 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BiX, BiPlus } from "react-icons/bi";
 import { v4 as uuidv4 } from "uuid";
+import useTask from "../hooks/useTask";
 import Modal from "./Modal";
 import ErrorMessage from "./ErrorMessage";
 import type { Collaborator } from "../types";
 import "../styles/ProjectModal.css";
-import useTask from "../hooks/useTask";
 
 export default function ProjectModal() {
   //#region States
@@ -19,6 +19,10 @@ export default function ProjectModal() {
     projectForm,
     addCollaborator,
     removeCollaborator,
+    currentProject,
+    activeId,
+    projects,
+    setCurrentProjectForm,
   } = useTask();
 
   const [inputCollaborators, setInputCollaborators] =
@@ -31,7 +35,21 @@ export default function ProjectModal() {
     [projectForm.collaborators]
   );
 
+  const isUpdate = useMemo(() => activeId !== "", [currentProject]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (activeId) {
+      const currentProject = projects.find(
+        (project) => project.id === activeId
+      );
+
+      if (currentProject) {
+        setCurrentProjectForm(currentProject);
+      }
+    }
+  }, [activeId]);
 
   //#endregion
 
@@ -59,7 +77,9 @@ export default function ProjectModal() {
 
   return (
     <Modal activeModal={projectModal} closeModal={closeProjectModal}>
-      <h2 className="project__modal-title">New Project</h2>
+      <h2 className="project__modal-title">
+        {isUpdate ? "Edit Project" : "New Project"}
+      </h2>
       <form className="form grid" onSubmit={handleSubmit}>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <div className="field">
@@ -104,6 +124,7 @@ export default function ProjectModal() {
           />
         </div>
 
+        {/* TODO: Implement a menu for filtering users by name */}
         <div className="collaborator__container grid">
           <div className="field">
             <input
@@ -140,7 +161,11 @@ export default function ProjectModal() {
           )}
         </div>
 
-        <input type="submit" value="save" className="submit button" />
+        <input
+          type="submit"
+          value={isUpdate ? "edit" : "save"}
+          className="submit button"
+        />
       </form>
     </Modal>
   );

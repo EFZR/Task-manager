@@ -15,10 +15,10 @@
 .field label {
   position: absolute;
   top: 50%;
-  left: 0.5rem;
+  left: 1.2rem;
   transform: translateY(-50%);
   cursor: text;
-  transition: top 0.2s, font-size 0.2s, padding 0.2s;
+  transition: top 0.2s, left 0.2s, font-size 0.2s, padding 0.2s;
   background-color: var(--container-color);
 }
 
@@ -40,6 +40,7 @@
 .field input:not(:placeholder-shown) ~ .label {
   position: absolute;
   top: -1%;
+  left: 0.5rem;
   font-size: var(--smaller-font-size);
   padding-inline: 10px;
 }
@@ -82,7 +83,7 @@
   padding-block: 2px;
   padding-inline: 10px;
   border-radius: 0.3rem;
-  box-shadow: 0 2px 8px var(--shadow-color);;
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .delete__item:hover {
