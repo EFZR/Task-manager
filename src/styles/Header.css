@@ -33,8 +33,10 @@
 .nav__logo span {
   color: var(--first-color);
   font-weight: var(--font-bold);
+  font-family: var(--logo-font);
+  font-size: 1.6rem;
   display: inline-block;
-  margin-left: 1.3rem;
+  margin-left: 1.4rem;
 }
 
 .nav__actions {
