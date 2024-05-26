@@ -21,7 +21,7 @@ export default function ProjectModal() {
     addCollaborator,
     removeCollaborator,
     currentProject,
-    activeId,
+    activeProjectId,
     projects,
     setCurrentProjectForm,
   } = useTask();
@@ -36,21 +36,21 @@ export default function ProjectModal() {
     [projectForm.collaborators]
   );
 
-  const isUpdate = useMemo(() => activeId !== "", [currentProject]);
+  const isUpdate = useMemo(() => activeProjectId !== "", [currentProject]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (activeId) {
+    if (activeProjectId) {
       const currentProject = projects.find(
-        (project) => project.id === activeId
+        (project) => project.id === activeProjectId
       );
 
       if (currentProject) {
         setCurrentProjectForm(currentProject);
       }
     }
-  }, [activeId]);
+  }, [activeProjectId]);
 
   //#endregion
 

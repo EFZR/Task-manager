@@ -1,4 +1,5 @@
 import { Droppable } from "@hello-pangea/dnd";
+import useTask from "../hooks/useTask";
 import KanbanCard from "./KanbanCard";
 import { List } from "../types";
 import { Task } from "../types";
@@ -11,13 +12,17 @@ type KanbanListProps = {
 };
 
 export default function KanbanList({ id, title, tasks }: KanbanListProps) {
+  const { openTaskModal } = useTask();
+
   return (
     <Droppable droppableId={id}>
       {(provided, _snapshot) => (
         <div className="kanban__list">
           <div className="kanban__list-header">
             <h3 className="kanban__header-title">{title}</h3>
-            <button className="kanban__header-button">new task</button>
+            <button className="kanban__header-button" onClick={openTaskModal}>
+              new task
+            </button>
           </div>
           <div
             className="kanban__container-card"

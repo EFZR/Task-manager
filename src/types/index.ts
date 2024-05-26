@@ -5,7 +5,7 @@ export type Project = {
   endDate: string;
   complete: Boolean;
   collaborators: Collaborator[];
-  lists: List[]
+  lists: List[];
 };
 
 export type NewProject = Pick<
@@ -13,12 +13,11 @@ export type NewProject = Pick<
   "name" | "description" | "endDate" | "collaborators"
 >;
 
-export type User = {
-  username: string;
-  pwd: string;
+export type List = {
+  id: string;
+  title: string;
+  tasks: Task[];
 };
-
-export type Collaborator = Omit<User, "pwd">;
 
 export type Task = {
   id: string;
@@ -26,9 +25,11 @@ export type Task = {
   description: string;
 };
 
-export type List = {
-  id: string;
-  title: string;
-  tasks: Task[];
+export type NewTask = Omit<Task, "id">;
+
+export type User = {
+  username: string;
+  pwd: string;
 };
 
+export type Collaborator = Omit<User, "pwd">;

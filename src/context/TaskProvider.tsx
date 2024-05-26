@@ -3,31 +3,39 @@ import {
   TaskReducer,
   initialProject,
   initialState,
+  initialTaskForm,
   intialProjectForm,
 } from "../store/task";
-import type { Collaborator, List, NewProject, Project } from "../types";
+import type { Collaborator, NewProject, NewTask, Project, Task } from "../types";
+import { DropResult } from "@hello-pangea/dnd";
 
 export interface TaskContextProps {
   projects: Project[];
-  toggleFilter: Boolean;
-  theme: Boolean;
-  projectModal: Boolean;
+  toggleFilter: boolean;
+  theme: boolean;
+  projectModal: boolean;
+  taskModal: boolean;
   projectForm: NewProject;
+  taskForm: NewTask;
+  activeProjectId: Project["id"];
+  activeTaskId: Task["id"];
   currentProject: Project;
-  activeId: Project["id"];
   addProject: (project: Project) => void;
-  switchTheme: () => void;
-  switchToggleFilter: () => void;
-  handleProjectForm: (e: ChangeEvent<HTMLInputElement>) => void;
-  clean: () => void;
-  openProjectModal: () => void;
-  closeProjectModal: () => void;
-  addCollaborator: (username: Collaborator["username"]) => void;
-  removeCollaborator: (username: Collaborator["username"]) => void;
+  addTask: (task: Task) => void;
   setCurrentProject: (project: Project) => void;
   setCurrentProjectForm: (project: Project) => void;
-  reorderLists: (list: List) => void;
-  moveLists: (startList: List, endList: List) => void;
+  addCollaborator: (username: Collaborator["username"]) => void;
+  removeCollaborator: (username: Collaborator["username"]) => void;
+  onDragEnd: (result: DropResult) => void;
+  handleProjectForm: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleTaskForm: (e: ChangeEvent<HTMLInputElement>) => void;
+  switchToggleFilter: () => void;
+  switchTheme: () => void;
+  openProjectModal: () => void;
+  closeProjectModal: () => void;
+  openTaskModal: () => void;
+  closeTaskModal: () => void;
+  clean: () => void;
 }
 
 export const TaskContext = createContext<TaskContextProps>({
@@ -35,22 +43,28 @@ export const TaskContext = createContext<TaskContextProps>({
   toggleFilter: false,
   theme: false,
   projectModal: false,
+  taskModal: false,
   projectForm: intialProjectForm,
+  taskForm: initialTaskForm,
   currentProject: initialProject,
-  activeId: "",
+  activeProjectId: "",
+  activeTaskId: "",
   addProject: () => {},
-  switchTheme: () => {},
-  switchToggleFilter: () => {},
-  openProjectModal: () => {},
-  closeProjectModal: () => {},
-  handleProjectForm: () => {},
-  clean: () => {},
-  addCollaborator: () => {},
-  removeCollaborator: () => {},
+  addTask: () => {},
   setCurrentProject: () => {},
   setCurrentProjectForm: () => {},
-  reorderLists: () => {},
-  moveLists: () => {},
+  addCollaborator: () => {},
+  removeCollaborator: () => {},
+  onDragEnd: () => {},
+  handleProjectForm: () => {},
+  handleTaskForm: () => {},
+  switchToggleFilter: () => {},
+  switchTheme: () => {},
+  openProjectModal: () => {},
+  closeProjectModal: () => {},
+  openTaskModal: () => {},
+  closeTaskModal: () => {},
+  clean: () => {},
 });
 
 function TaskProvider({ children }: { children: ReactNode }) {
@@ -66,36 +80,8 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "add-project", payload: { project: project } });
   }
 
-  function switchTheme() {
-    dispatch({ type: "switch-theme" });
-  }
-
-  function switchToggleFilter() {
-    dispatch({ type: "switch-toggle-filter" });
-  }
-
-  function openProjectModal() {
-    dispatch({ type: "open-project-modal" });
-  }
-
-  function closeProjectModal() {
-    dispatch({ type: "close-project-modal" });
-  }
-
-  function handleProjectForm(e: ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: "handle-project-form", payload: { e } });
-  }
-
-  function clean() {
-    dispatch({ type: "clean" });
-  }
-
-  function addCollaborator(username: Collaborator["username"]) {
-    dispatch({ type: "add-collaborator", payload: { username } });
-  }
-
-  function removeCollaborator(username: Collaborator["username"]) {
-    dispatch({ type: "remove-collaborator", payload: { username } });
+  function addTask(task: Task) {
+    dispatch({ type: "add-task", payload: { task } });
   }
 
   function setCurrentProject(project: Project) {
@@ -106,12 +92,52 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "current-project-form", payload: { project } });
   }
 
-  function reorderLists(list: List) {
-    dispatch({ type: "reorder-lists", payload: { list } });
+  function addCollaborator(username: Collaborator["username"]) {
+    dispatch({ type: "add-collaborator", payload: { username } });
   }
 
-  function moveLists(startList: List, endList: List) {
-    dispatch({ type: "move-lists", payload: { startList, endList } });
+  function removeCollaborator(username: Collaborator["username"]) {
+    dispatch({ type: "remove-collaborator", payload: { username } });
+  }
+
+  function onDragEnd(result: DropResult) {
+    dispatch({ type: "on-drag-end", payload: { result } });
+  }
+
+  function handleProjectForm(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: "handle-project-form", payload: { e } });
+  }
+
+  function handleTaskForm(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: "handle-task-form", payload: { e } });
+  }
+
+  function switchToggleFilter() {
+    dispatch({ type: "switch-toggle-filter" });
+  }
+
+  function switchTheme() {
+    dispatch({ type: "switch-theme" });
+  }
+
+  function openProjectModal() {
+    dispatch({ type: "open-project-modal" });
+  }
+
+  function closeProjectModal() {
+    dispatch({ type: "close-project-modal" });
+  }
+
+  function openTaskModal() {
+    dispatch({ type: "open-task-modal" });
+  }
+
+  function closeTaskModal() {
+    dispatch({ type: "close-task-modal" });
+  }
+
+  function clean() {
+    dispatch({ type: "clean" });
   }
 
   //#endregion
@@ -119,26 +145,32 @@ function TaskProvider({ children }: { children: ReactNode }) {
   return (
     <TaskContext.Provider
       value={{
+        currentProject: state.currentProject,
         projects: state.projects,
         theme: state.theme,
         projectModal: state.projectModal,
+        taskModal: state.taskModal,
         toggleFilter: state.toggleFilter,
         projectForm: state.projectForm,
-        currentProject: state.currentProject,
-        activeId: state.activeId,
+        taskForm: state.taskForm,
+        activeProjectId: state.activeProjectId,
+        activeTaskId: state.activeTaskId,
         addProject,
-        switchTheme,
-        switchToggleFilter,
-        openProjectModal,
-        closeProjectModal,
-        handleProjectForm,
-        clean,
-        addCollaborator,
-        removeCollaborator,
+        addTask,
         setCurrentProject,
         setCurrentProjectForm,
-        reorderLists,
-        moveLists
+        addCollaborator,
+        removeCollaborator,
+        onDragEnd,
+        handleProjectForm,
+        handleTaskForm,
+        switchToggleFilter,
+        switchTheme,
+        openProjectModal,
+        closeProjectModal,
+        openTaskModal,
+        closeTaskModal,
+        clean,
       }}
     >
       {children}
