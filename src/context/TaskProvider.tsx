@@ -1,4 +1,5 @@
 import { useReducer, createContext, ReactNode, ChangeEvent } from "react";
+import { DropResult } from "@hello-pangea/dnd";
 import {
   TaskReducer,
   initialProject,
@@ -6,8 +7,14 @@ import {
   initialTaskForm,
   intialProjectForm,
 } from "../store/task";
-import type { Collaborator, NewProject, NewTask, Project, Task } from "../types";
-import { DropResult } from "@hello-pangea/dnd";
+import type {
+  Collaborator,
+  NewProject,
+  NewTask,
+  Project,
+  Task,
+  List,
+} from "../types";
 
 export interface TaskContextProps {
   projects: Project[];
@@ -33,7 +40,7 @@ export interface TaskContextProps {
   switchTheme: () => void;
   openProjectModal: () => void;
   closeProjectModal: () => void;
-  openTaskModal: () => void;
+  openTaskModal: (activeListId: List["id"]) => void;
   closeTaskModal: () => void;
   clean: () => void;
 }
@@ -128,8 +135,8 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "close-project-modal" });
   }
 
-  function openTaskModal() {
-    dispatch({ type: "open-task-modal" });
+  function openTaskModal(activeListId: List["id"]) {
+    dispatch({ type: "open-task-modal", payload: { activeListId } });
   }
 
   function closeTaskModal() {

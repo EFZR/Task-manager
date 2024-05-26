@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
 import ErrorMessage from "./ErrorMessage";
-import type { NewTask } from "../types";
 import "../styles/TaskModal.css";
 
 export default function TaskModal() {
@@ -19,12 +18,13 @@ export default function TaskModal() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    addTask({ ...taskForm, id: uuidv4() });
   }
 
   return (
     <Modal activeModal={taskModal} closeModal={closeTaskModal}>
       <h2 className="task__modal-title">New Task</h2>
-      <form className="form grid">
+      <form className="form grid" onSubmit={handleSubmit}>
         <div className="field">
           <input
             type="text"
@@ -53,11 +53,7 @@ export default function TaskModal() {
             Descriptions
           </label>
         </div>
-        <input
-          type="submit"
-          value={"save"}
-          className="submit button"
-        />
+        <input type="submit" value={"save"} className="submit button" />
       </form>
     </Modal>
   );

@@ -35,21 +35,22 @@ export type TaskAction =
   | { type: "switch-theme" }
   | { type: "open-project-modal" }
   | { type: "close-project-modal" }
-  | { type: "open-task-modal" }
+  | { type: "open-task-modal"; payload: { activeListId: List["id"] } }
   | { type: "close-task-modal" }
   | { type: "clean" };
 
 export type TaskState = {
   projects: Project[];
-  toggleFilter: boolean;
-  theme: boolean;
   projectModal: boolean;
   projectForm: NewProject;
   taskModal: boolean;
   taskForm: NewTask;
-  currentProject: Project;
   activeProjectId: Project["id"];
+  activeListId: List["id"];
   activeTaskId: Task["id"];
+  toggleFilter: boolean;
+  theme: boolean;
+  currentProject: Project;
 };
 
 export const intialProjectForm: NewProject = {
@@ -85,6 +86,7 @@ export const initialState: TaskState = {
   currentProject: initialProject,
   activeProjectId: "",
   activeTaskId: "",
+  activeListId: "",
 };
 
 export const TaskReducer = (
@@ -136,12 +138,41 @@ export const TaskReducer = (
         taskModal: false,
         taskForm: initialTaskForm,
       };
-    } else {
+    }
+
+    // Add a new Task.
+    else {
+      const { lists } = state.currentProject;
+      const currentListIndex: number = lists.findIndex(
+        (list) => list.id === state.activeListId
+      );
+
+      if (currentListIndex === -1) {
+        return state;
+      }
+
+      const currentList: List = lists[currentListIndex];
+
+      const updatedList: List = {
+        ...currentList,
+        tasks: [...currentList.tasks, action.payload.task],
+      };
+
+      const updatedLists: List[] = [
+        ...lists.slice(0, currentListIndex),
+        updatedList,
+        ...lists.slice(currentListIndex + 1),
+      ];
+
       return {
         ...state,
         taskModal: false,
         taskForm: initialTaskForm,
         activeTaskId: "",
+        currentProject: {
+          ...state.currentProject,
+          lists: updatedLists,
+        },
       };
     }
   }
@@ -368,6 +399,7 @@ export const TaskReducer = (
     return {
       ...state,
       taskModal: true,
+      activeListId: action.payload.activeListId,
     };
   }
 
@@ -375,6 +407,7 @@ export const TaskReducer = (
     return {
       ...state,
       taskModal: false,
+      activeListId: "",
     };
   }
 

@@ -20,7 +20,10 @@ export default function KanbanList({ id, title, tasks }: KanbanListProps) {
         <div className="kanban__list">
           <div className="kanban__list-header">
             <h3 className="kanban__header-title">{title}</h3>
-            <button className="kanban__header-button" onClick={openTaskModal}>
+            <button
+              className="kanban__header-button"
+              onClick={() => openTaskModal(id)}
+            >
               new task
             </button>
           </div>
