@@ -25,6 +25,7 @@
 
 .kanban__slider {
   display: flex;
+  align-items: start;
   overflow-x: auto;
   scrollbar-width: 0;
   gap: 1rem;

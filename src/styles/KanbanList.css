@@ -1,7 +1,7 @@
 .kanban__list {
   position: relative;
   background-color: var(--container-color);
-  padding-inline: 0.5rem;
+  padding: 0.5rem;
   border-radius: 0.3rem;
   box-shadow: 0 5px 12px var(--shadow-color);
   flex: 0 0 250px;
@@ -16,39 +16,39 @@
 @media screen and (min-width: 1150px) {
   .kanban__list {
     flex: 0 0 350px;
-    padding-inline: 1rem;
+    padding: 1rem;
   }
 }
 
-.kanban__list-header,
-.kanban__list-footer {
-  position: sticky;
-  padding-block: 0.8rem;
-}
-
 .kanban__list-header {
-  top: 0;
-  left: 0;
-  background-color: var(--container-color);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.kanban__list-footer {
-  bottom: 0;
-  left: 0;
-  background-color: var(--container-color);
-}
-
-.kanban__list-title {
+.kanban__header-title {
   font-size: 1rem;
   font-weight: var(--font-bold);
   color: var(--title-color);
 }
 
+.kanban__header-button {
+  padding-inline: 1rem;
+  padding-block: 0.3rem;
+  background-color: var(--first-color);
+  color: var(--white-color);
+  font-weight: var(--font-semi-bold);
+  font-size: var(--small-font-size);
+  text-transform: capitalize;
+}
+
+.kanban__header-button:hover {
+  background-color: var(--first-color-alt);
+}
+
 .kanban__container-card {
-  row-gap: 1rem;
-  overflow-y: auto;
-  max-height: 45vh;
-  padding-right: 8px;
+  min-height: 10vh;
 }
 
 .kanban__container-card::-webkit-scrollbar {
@@ -57,13 +57,6 @@
 
 .kanban__container-card::-webkit-scrollbar-thumb {
   width: 0.4rem;
-}
-
-.kanban__footer-button {
-  width: 100%;
-  border-radius: 0.3rem;
-  display: flex;
-  align-items: center;
 }
 
 /* Dark Theme Styles */

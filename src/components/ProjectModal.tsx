@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
 import ErrorMessage from "./ErrorMessage";
+import { initialList } from "../data";
 import type { Collaborator } from "../types";
 import "../styles/ProjectModal.css";
 
@@ -61,7 +62,7 @@ export default function ProjectModal() {
       if (Object.values(projectForm).includes("")) {
         throw new Error("Please ensure all fields are filled out correctly.");
       }
-      addProject({ ...projectForm, id: uuidv4(), complete: false, tasks: [] });
+      addProject({ ...projectForm, id: uuidv4(), complete: false, lists: initialList });
       setInputCollaborators("");
       navigate("/workspace");
     } catch (error) {

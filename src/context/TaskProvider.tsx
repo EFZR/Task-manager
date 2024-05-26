@@ -5,7 +5,7 @@ import {
   initialState,
   intialProjectForm,
 } from "../store/task";
-import type { Collaborator, NewProject, Project } from "../types";
+import type { Collaborator, List, NewProject, Project } from "../types";
 
 export interface TaskContextProps {
   projects: Project[];
@@ -26,6 +26,8 @@ export interface TaskContextProps {
   removeCollaborator: (username: Collaborator["username"]) => void;
   setCurrentProject: (project: Project) => void;
   setCurrentProjectForm: (project: Project) => void;
+  reorderLists: (list: List) => void;
+  moveLists: (startList: List, endList: List) => void;
 }
 
 export const TaskContext = createContext<TaskContextProps>({
@@ -47,6 +49,8 @@ export const TaskContext = createContext<TaskContextProps>({
   removeCollaborator: () => {},
   setCurrentProject: () => {},
   setCurrentProjectForm: () => {},
+  reorderLists: () => {},
+  moveLists: () => {},
 });
 
 function TaskProvider({ children }: { children: ReactNode }) {
@@ -102,6 +106,14 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "current-project-form", payload: { project } });
   }
 
+  function reorderLists(list: List) {
+    dispatch({ type: "reorder-lists", payload: { list } });
+  }
+
+  function moveLists(startList: List, endList: List) {
+    dispatch({ type: "move-lists", payload: { startList, endList } });
+  }
+
   //#endregion
 
   return (
@@ -125,6 +137,8 @@ function TaskProvider({ children }: { children: ReactNode }) {
         removeCollaborator,
         setCurrentProject,
         setCurrentProjectForm,
+        reorderLists,
+        moveLists
       }}
     >
       {children}

@@ -5,7 +5,7 @@ export type Project = {
   endDate: string;
   complete: Boolean;
   collaborators: Collaborator[];
-  tasks: Task[];
+  lists: List[]
 };
 
 export type NewProject = Pick<
@@ -24,13 +24,11 @@ export type Task = {
   id: string;
   title: string;
   description: string;
-  state: State;
 };
 
-export type Column = {
-  id: State;
+export type List = {
+  id: string;
   title: string;
-  taskIds: Task[];
+  tasks: Task[];
 };
 
-export type State = "todo" | "process" | "done";

@@ -1,29 +1,32 @@
-import { ReactNode } from "react";
 import { Droppable } from "@hello-pangea/dnd";
+import KanbanCard from "./KanbanCard";
+import { List } from "../types";
+import { Task } from "../types";
 import "../styles/KanbanList.css";
 
 type KanbanListProps = {
-  children: ReactNode;
-  name: string;
+  id: List["id"];
+  title: string;
+  tasks: Task[];
 };
 
-export default function KanbanList({ children, name }: KanbanListProps) {
+export default function KanbanList({ id, title, tasks }: KanbanListProps) {
   return (
-    <Droppable droppableId={name}>
+    <Droppable droppableId={id}>
       {(provided, _snapshot) => (
-        <div
-          className="kanban__list"
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-        >
+        <div className="kanban__list">
           <div className="kanban__list-header">
-            <h3 className="kanban__list-title">{name}</h3>
+            <h3 className="kanban__header-title">{title}</h3>
+            <button className="kanban__header-button">new task</button>
           </div>
-          <div className="kanban__container-card grid">{children}</div>
-          <div className="kanban__list-footer">
-            <button type="button" className="button kanban__footer-button">
-              Add a Card
-            </button>
+          <div
+            className="kanban__container-card"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {tasks.map((task, index) => (
+              <KanbanCard index={index} task={task} key={task.id} />
+            ))}
           </div>
           {provided.placeholder}
         </div>

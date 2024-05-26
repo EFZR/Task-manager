@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { projects } from "../data";
-import { Collaborator, NewProject, Project } from "../types";
+import { Collaborator, List, NewProject, Project } from "../types";
 
 // TODO: Establish a relationship between each collaborator and their corresponding user entity
 
@@ -30,6 +30,14 @@ export type TaskActions =
   | {
       type: "current-project-form";
       payload: { project: Project };
+    }
+  | {
+      type: "reorder-lists";
+      payload: { list: List };
+    }
+  | {
+      type: "move-lists";
+      payload: { startList: List; endList: List };
     };
 
 export type TaskState = {
@@ -56,7 +64,7 @@ export const initialProject: Project = {
   complete: false,
   description: "",
   endDate: "",
-  tasks: [],
+  lists: [],
 };
 
 export const initialState: TaskState = {
@@ -227,6 +235,44 @@ export const TaskReducer = (
         endDate: action.payload.project.endDate,
         collaborators: action.payload.project.collaborators,
         description: action.payload.project.description,
+      },
+    };
+  }
+
+  if (action.type === "reorder-lists") {
+    const updatedLists: List[] = state.currentProject.lists.map((list) => {
+      if (list.id === action.payload.list.id) {
+        return action.payload.list;
+      }
+      return list;
+    });
+
+    return {
+      ...state,
+      currentProject: {
+        ...state.currentProject,
+        lists: updatedLists,
+      },
+    };
+  }
+
+  if (action.type === "move-lists") {
+    const updatedLists: List[] = state.currentProject.lists.map((list) => {
+      if (list.id === action.payload.startList.id) {
+        return action.payload.startList;
+      }
+
+      if (list.id === action.payload.endList.id) {
+        return action.payload.endList;
+      }
+
+      return list;
+    });
+    return {
+      ...state,
+      currentProject: {
+        ...state.currentProject,
+        lists: updatedLists,
       },
     };
   }

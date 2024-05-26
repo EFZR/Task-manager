@@ -10,9 +10,9 @@ type KanbanCardProps = {
 export default function KanbanCard({ task, index }: KanbanCardProps) {
   return (
     <Draggable draggableId={task.id} index={index}>
-      {(provided, _snaphot) => (
+      {(provided, snaphot) => (
         <article
-          className="kanban__card grid"
+          className={`kanban__card grid ${snaphot.isDragging && "kanban__card-dragged"}`}
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
