@@ -29,6 +29,8 @@ export interface TaskContextProps {
   currentProject: Project;
   addProject: (project: Project) => void;
   addTask: (task: Task) => void;
+  deleteProject: (projectId: Project["id"]) => void;
+  deleteTask: (taskId: Task["id"], listId: List["id"]) => void;
   setCurrentProject: (project: Project) => void;
   addCollaborator: (username: Collaborator["username"]) => void;
   removeCollaborator: (username: Collaborator["username"]) => void;
@@ -42,6 +44,7 @@ export interface TaskContextProps {
   openTaskModal: (activeListId: List["id"]) => void;
   closeTaskModal: () => void;
   setActiveTask: (taskId: Task["id"], listId: List["id"]) => void;
+  setActiveProject: (projectId: Project["id"]) => void;
   clean: () => void;
 }
 
@@ -58,6 +61,8 @@ export const TaskContext = createContext<TaskContextProps>({
   activeTaskId: "",
   addProject: () => {},
   addTask: () => {},
+  deleteProject: () => {},
+  deleteTask: () => {},
   setCurrentProject: () => {},
   addCollaborator: () => {},
   removeCollaborator: () => {},
@@ -71,6 +76,7 @@ export const TaskContext = createContext<TaskContextProps>({
   openTaskModal: () => {},
   closeTaskModal: () => {},
   setActiveTask: () => {},
+  setActiveProject: () => {},
   clean: () => {},
 });
 
@@ -89,6 +95,14 @@ function TaskProvider({ children }: { children: ReactNode }) {
 
   function addTask(task: Task) {
     dispatch({ type: "add-task", payload: { task } });
+  }
+
+  function deleteProject(projectId: Project["id"]) {
+    dispatch({ type: "delete-project", payload: { projectId } });
+  }
+
+  function deleteTask(taskId: Task["id"], listId: List["id"]) {
+    dispatch({ type: "delete-task", payload: { taskId, listId } });
   }
 
   function setCurrentProject(project: Project) {
@@ -143,6 +157,10 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "set-active-task", payload: { taskId, listId } });
   }
 
+  function setActiveProject(projectId: Project["id"]) {
+    dispatch({ type: "set-active-project", payload: { projectId } });
+  }
+
   function clean() {
     dispatch({ type: "clean" });
   }
@@ -164,6 +182,8 @@ function TaskProvider({ children }: { children: ReactNode }) {
         activeTaskId: state.activeTaskId,
         addProject,
         addTask,
+        deleteProject,
+        deleteTask,
         setCurrentProject,
         addCollaborator,
         removeCollaborator,
@@ -177,6 +197,7 @@ function TaskProvider({ children }: { children: ReactNode }) {
         openTaskModal,
         closeTaskModal,
         setActiveTask,
+        setActiveProject,
         clean,
       }}
     >

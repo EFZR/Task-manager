@@ -1,5 +1,4 @@
 import { ChangeEvent } from "react";
-import { projects } from "../data";
 import {
   Collaborator,
   List,
@@ -15,8 +14,9 @@ import { DropResult } from "@hello-pangea/dnd";
 export type TaskAction =
   | { type: "add-project"; payload: { project: Project } }
   | { type: "add-task"; payload: { task: Task } }
+  | { type: "delete-project"; payload: { projectId: Project["id"] } }
+  | { type: "delete-task"; payload: { taskId: Task["id"]; listId: List["id"] } }
   | { type: "current-project"; payload: { project: Project } }
-  | { type: "current-project-form"; payload: { project: Project } }
   | {
       type: "add-collaborator";
       payload: { username: Collaborator["username"] };
@@ -40,6 +40,10 @@ export type TaskAction =
   | {
       type: "set-active-task";
       payload: { taskId: Task["id"]; listId: List["id"] };
+    }
+  | {
+      type: "set-active-project";
+      payload: { projectId: Project["id"] };
     }
   | { type: "clean" };
 
@@ -79,15 +83,25 @@ export const initialTaskForm: NewTask = {
   title: "",
 };
 
+function localStorageProjects(): Project[] {
+  const projects = localStorage.getItem("projects");
+  return projects ? JSON.parse(projects) : projects;
+}
+
+function localStorageCurrentProject(): Project {
+  const currentProject = localStorage.getItem("current-project");
+  return currentProject ? JSON.parse(currentProject) : initialProject;
+}
+
 export const initialState: TaskState = {
-  projects: projects,
+  projects: localStorageProjects(),
+  currentProject: localStorageCurrentProject(),
   toggleFilter: false,
   theme: false,
   projectModal: false,
   projectForm: intialProjectForm,
   taskModal: false,
   taskForm: initialTaskForm,
-  currentProject: initialProject,
   activeProjectId: "",
   activeTaskId: "",
   activeListId: "",
@@ -221,23 +235,63 @@ export const TaskReducer = (
     };
   }
 
+  if (action.type === "delete-project") {
+    const projects = state.projects.filter(
+      (project) => project.id !== action.payload.projectId
+    );
+    return {
+      ...state,
+      projects,
+    };
+  }
+
+  if (action.type === "delete-task") {
+    const { lists } = state.currentProject;
+    const currentListIndex: number = lists.findIndex(
+      (list) => list.id === action.payload.listId
+    );
+    const currentList: List = lists[currentListIndex];
+    const { tasks } = currentList;
+    const updatedTasks: Task[] = tasks.filter(
+      (task) => task.id !== action.payload.taskId
+    );
+
+    const updatedList: List = {
+      ...currentList,
+      tasks: updatedTasks,
+    };
+
+    const updatedLists: List[] = lists.map((list) => {
+      if (list.id === updatedList.id) {
+        return updatedList;
+      }
+      return list;
+    });
+
+    const currentProject: Project = {
+      ...state.currentProject,
+      lists: updatedLists,
+    };
+
+    const projects: Project[] = state.projects.map((project) => {
+      if (project.id === currentProject.id) {
+        return currentProject;
+      }
+      return project;
+    });
+
+    return {
+      ...state,
+      projects,
+      currentProject,
+    };
+  }
+
   if (action.type === "current-project") {
     return {
       ...state,
       currentProject: action.payload.project,
       activeProjectId: action.payload.project.id,
-    };
-  }
-
-  if (action.type === "current-project-form") {
-    return {
-      ...state,
-      projectForm: {
-        name: action.payload.project.name,
-        endDate: action.payload.project.endDate,
-        collaborators: action.payload.project.collaborators,
-        description: action.payload.project.description,
-      },
     };
   }
 
@@ -422,14 +476,9 @@ export const TaskReducer = (
   }
 
   if (action.type === "open-project-modal") {
-    const projectForm: NewProject = {
-      ...state.currentProject,
-    };
-
     return {
       ...state,
       projectModal: true,
-      projectForm,
     };
   }
 
@@ -492,6 +541,23 @@ export const TaskReducer = (
       activeListId: action.payload.listId,
       taskForm,
       taskModal: true,
+    };
+  }
+
+  if (action.type === "set-active-project") {
+    const currentProjectIndex: number = state.projects.findIndex(
+      (project) => project.id === action.payload.projectId
+    );
+    const currentProject: Project = state.projects[currentProjectIndex];
+    const projectForm: NewProject = {
+      ...currentProject,
+    };
+
+    return {
+      ...state,
+      projectForm,
+      projectModal: true,
+      activeProjectId: action.payload.projectId,
     };
   }
 

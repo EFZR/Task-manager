@@ -2,8 +2,8 @@ import { FormEvent, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
-import "../styles/TaskModal.css";
 import { toast } from "react-toastify";
+import "../styles/TaskModal.css";
 
 export default function TaskModal() {
   const {
@@ -24,7 +24,11 @@ export default function TaskModal() {
       return;
     }
     addTask({ ...taskForm, id: uuidv4() });
-    toast.success("Task Created Succesfully.");
+
+    const toastMessage = activeTaskId
+      ? "Task Edited Successfully."
+      : "Task Created Successfully.";
+    toast.success(toastMessage);
   }
 
   return (

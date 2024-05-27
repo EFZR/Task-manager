@@ -51,7 +51,10 @@ export default function ProjectModal() {
       lists: initialList,
     });
     setInputCollaborators("");
-    toast.success("Project created correctly, feel free creating new tasks.");
+    const toastMessage = activeProjectId
+      ? "Project Edited Successfully."
+      : "Project Created Successfully.";
+    toast.success(toastMessage);
   }
 
   //#endregion

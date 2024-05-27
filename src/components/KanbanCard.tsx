@@ -1,20 +1,21 @@
 import { useRef, useState, useEffect } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import { BiDotsVerticalRounded, BiPencil, BiTrash } from "react-icons/bi";
+import { toast } from "react-toastify";
 import useTask from "../hooks/useTask";
 import { List, Task } from "../types";
 import "../styles/KanbanCard.css";
 
 type KanbanCardProps = {
   task: Task;
-  listId: List["id"]
+  listId: List["id"];
   index: number;
 };
 
 export default function KanbanCard({ task, listId, index }: KanbanCardProps) {
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const optionsRef = useRef<HTMLDivElement>(null);
-  const { setActiveTask } = useTask();
+  const { setActiveTask, deleteTask } = useTask();
 
   const handleClickOutside = (event: globalThis.MouseEvent) => {
     if (
@@ -60,7 +61,13 @@ export default function KanbanCard({ task, listId, index }: KanbanCardProps) {
             >
               Edit <BiPencil />
             </button>
-            <button className="kanban__display-action">
+            <button
+              className="kanban__display-action"
+              onClick={() => {
+                deleteTask(task.id, listId);
+                toast.success("Task deleted succesfully.");
+              }}
+            >
               Delete <BiTrash />
             </button>
           </div>

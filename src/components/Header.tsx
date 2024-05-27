@@ -5,13 +5,8 @@ import "../styles/Header.css";
 import useTask from "../hooks/useTask";
 
 export default function Header() {
-  const {
-    toggleFilter,
-    switchToggleFilter,
-    theme,
-    switchTheme,
-    clean,
-  } = useTask();
+  const { toggleFilter, switchToggleFilter, theme, switchTheme, clean } =
+    useTask();
   useDarkTheme(theme);
 
   return (
@@ -44,7 +39,8 @@ export default function Header() {
           ) : (
             <BiMoon className="nav__icon" onClick={switchTheme} />
           )}
-          <BiUser className="nav__icon" />
+          {/* TODO: Implement user authentication and profile features */}
+          {/* <BiUser className="nav__icon" /> */}
         </div>
       </nav>
     </header>

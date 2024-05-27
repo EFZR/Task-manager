@@ -4,7 +4,7 @@ import useTask from "../hooks/useTask";
 import "../styles/CreateButton.css";
 
 export default function CreateButton() {
-  const { openProjectModal } = useTask();
+  const { openProjectModal, setActiveProject, currentProject } = useTask();
   const location = useLocation();
 
   return location.pathname === "/" ? (
@@ -12,7 +12,11 @@ export default function CreateButton() {
       <BiPlus />
     </button>
   ) : (
-    <button type="button" className="create__button" onClick={openProjectModal}>
+    <button
+      type="button"
+      className="create__button"
+      onClick={() => setActiveProject(currentProject.id)}
+    >
       <BiPencil />
     </button>
   );
