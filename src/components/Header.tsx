@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BiMoon, BiSun, BiUser, BiSearch } from "react-icons/bi";
+import { BiMoon, BiSun, BiSearch } from "react-icons/bi";
 import useDarkTheme from "../hooks/useDarkTheme";
 import "../styles/Header.css";
 import useTask from "../hooks/useTask";
