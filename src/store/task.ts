@@ -1,4 +1,6 @@
 import { ChangeEvent } from "react";
+import { DropResult } from "@hello-pangea/dnd";
+import { projects } from "../data";
 import {
   Collaborator,
   List,
@@ -7,7 +9,6 @@ import {
   Task,
   NewTask,
 } from "../types";
-import { DropResult } from "@hello-pangea/dnd";
 
 // TODO: Establish a relationship between each collaborator and their corresponding user entity
 
@@ -84,8 +85,8 @@ export const initialTaskForm: NewTask = {
 };
 
 function localStorageProjects(): Project[] {
-  const projects = localStorage.getItem("projects");
-  return projects ? JSON.parse(projects) : projects;
+  const lsProjects = localStorage.getItem("projects");
+  return lsProjects ? JSON.parse(lsProjects) : projects;
 }
 
 function localStorageCurrentProject(): Project {
