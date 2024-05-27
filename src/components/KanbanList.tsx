@@ -33,7 +33,7 @@ export default function KanbanList({ id, title, tasks }: KanbanListProps) {
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => (
-              <KanbanCard index={index} task={task} key={task.id} />
+              <KanbanCard index={index} task={task} listId={id} key={task.id} />
             ))}
           </div>
           {provided.placeholder}

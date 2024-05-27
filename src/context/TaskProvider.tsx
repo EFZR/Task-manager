@@ -30,7 +30,6 @@ export interface TaskContextProps {
   addProject: (project: Project) => void;
   addTask: (task: Task) => void;
   setCurrentProject: (project: Project) => void;
-  setCurrentProjectForm: (project: Project) => void;
   addCollaborator: (username: Collaborator["username"]) => void;
   removeCollaborator: (username: Collaborator["username"]) => void;
   onDragEnd: (result: DropResult) => void;
@@ -42,6 +41,7 @@ export interface TaskContextProps {
   closeProjectModal: () => void;
   openTaskModal: (activeListId: List["id"]) => void;
   closeTaskModal: () => void;
+  setActiveTask: (taskId: Task["id"], listId: List["id"]) => void;
   clean: () => void;
 }
 
@@ -59,7 +59,6 @@ export const TaskContext = createContext<TaskContextProps>({
   addProject: () => {},
   addTask: () => {},
   setCurrentProject: () => {},
-  setCurrentProjectForm: () => {},
   addCollaborator: () => {},
   removeCollaborator: () => {},
   onDragEnd: () => {},
@@ -71,6 +70,7 @@ export const TaskContext = createContext<TaskContextProps>({
   closeProjectModal: () => {},
   openTaskModal: () => {},
   closeTaskModal: () => {},
+  setActiveTask: () => {},
   clean: () => {},
 });
 
@@ -93,10 +93,6 @@ function TaskProvider({ children }: { children: ReactNode }) {
 
   function setCurrentProject(project: Project) {
     dispatch({ type: "current-project", payload: { project } });
-  }
-
-  function setCurrentProjectForm(project: Project) {
-    dispatch({ type: "current-project-form", payload: { project } });
   }
 
   function addCollaborator(username: Collaborator["username"]) {
@@ -143,6 +139,10 @@ function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "close-task-modal" });
   }
 
+  function setActiveTask(taskId: Task["id"], listId: List["id"]) {
+    dispatch({ type: "set-active-task", payload: { taskId, listId } });
+  }
+
   function clean() {
     dispatch({ type: "clean" });
   }
@@ -165,7 +165,6 @@ function TaskProvider({ children }: { children: ReactNode }) {
         addProject,
         addTask,
         setCurrentProject,
-        setCurrentProjectForm,
         addCollaborator,
         removeCollaborator,
         onDragEnd,
@@ -177,6 +176,7 @@ function TaskProvider({ children }: { children: ReactNode }) {
         closeProjectModal,
         openTaskModal,
         closeTaskModal,
+        setActiveTask,
         clean,
       }}
     >

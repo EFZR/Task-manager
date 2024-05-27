@@ -1,5 +1,6 @@
 .task__modal-title {
   padding-bottom: 2rem;
+  text-transform: capitalize;
 }
 
 .form {

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { BiX, BiPlus } from "react-icons/bi";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
@@ -12,14 +12,12 @@ export default function ProjectModal() {
   //#region States
 
   const {
-    projects,
     projectModal,
     projectForm,
     currentProject,
     activeProjectId,
     addProject,
     addCollaborator,
-    setCurrentProjectForm,
     removeCollaborator,
     handleProjectForm,
     closeProjectModal,
@@ -34,18 +32,6 @@ export default function ProjectModal() {
   );
 
   const isUpdate = useMemo(() => activeProjectId !== "", [currentProject]);
-
-  useEffect(() => {
-    if (activeProjectId) {
-      const currentProject = projects.find(
-        (project) => project.id === activeProjectId
-      );
-
-      if (currentProject) {
-        setCurrentProjectForm(currentProject);
-      }
-    }
-  }, [activeProjectId]);
 
   //#endregion
 

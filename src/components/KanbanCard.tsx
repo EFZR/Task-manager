@@ -1,17 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import { BiDotsVerticalRounded, BiPencil, BiTrash } from "react-icons/bi";
-import { Task } from "../types";
+import useTask from "../hooks/useTask";
+import { List, Task } from "../types";
 import "../styles/KanbanCard.css";
 
 type KanbanCardProps = {
   task: Task;
+  listId: List["id"]
   index: number;
 };
 
-export default function KanbanCard({ task, index }: KanbanCardProps) {
+export default function KanbanCard({ task, listId, index }: KanbanCardProps) {
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const optionsRef = useRef<HTMLDivElement>(null);
+  const { setActiveTask } = useTask();
 
   const handleClickOutside = (event: globalThis.MouseEvent) => {
     if (
@@ -45,18 +48,21 @@ export default function KanbanCard({ task, index }: KanbanCardProps) {
           <p>{task.description}</p>
           <BiDotsVerticalRounded
             className="kanban__options"
-            onClick={() => setShowOptions(!showOptions)}
+            onClick={() => setShowOptions(true)}
           />
           <div
             ref={optionsRef}
             className={`kanban__options-display ${showOptions && "show"}`}
           >
-            <div className="kanban__display-action">
+            <button
+              className="kanban__display-action"
+              onClick={() => setActiveTask(task.id, listId)}
+            >
               Edit <BiPencil />
-            </div>
-            <div className="kanban__display-action">
+            </button>
+            <button className="kanban__display-action">
               Delete <BiTrash />
-            </div>
+            </button>
           </div>
         </article>
       )}

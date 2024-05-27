@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
@@ -12,9 +12,10 @@ export default function TaskModal() {
     handleTaskForm,
     taskModal,
     activeTaskId,
-    projects,
     taskForm,
   } = useTask();
+
+  const isUpdate = useMemo(() => activeTaskId !== "", [activeTaskId]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
@@ -28,7 +29,9 @@ export default function TaskModal() {
 
   return (
     <Modal activeModal={taskModal} closeModal={closeTaskModal}>
-      <h2 className="task__modal-title">New Task</h2>
+      <h2 className="task__modal-title">
+        {isUpdate ? "edit task" : "new task"}
+      </h2>
       <form className="form grid" onSubmit={handleSubmit}>
         <div className="field">
           <input
@@ -58,7 +61,11 @@ export default function TaskModal() {
             Descriptions
           </label>
         </div>
-        <input type="submit" value={"save"} className="submit button" />
+        <input
+          type="submit"
+          value={isUpdate ? "edit" : "save"}
+          className="submit button"
+        />
       </form>
     </Modal>
   );

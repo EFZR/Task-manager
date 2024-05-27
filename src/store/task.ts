@@ -37,13 +37,17 @@ export type TaskAction =
   | { type: "close-project-modal" }
   | { type: "open-task-modal"; payload: { activeListId: List["id"] } }
   | { type: "close-task-modal" }
+  | {
+      type: "set-active-task";
+      payload: { taskId: Task["id"]; listId: List["id"] };
+    }
   | { type: "clean" };
 
 export type TaskState = {
   projects: Project[];
   projectModal: boolean;
-  projectForm: NewProject;
   taskModal: boolean;
+  projectForm: NewProject;
   taskForm: NewTask;
   activeProjectId: Project["id"];
   activeListId: List["id"];
@@ -96,10 +100,15 @@ export const TaskReducer = (
   if (action.type === "add-project") {
     // Edit project
     if (state.activeProjectId) {
-      const currentProject = { ...action.payload.project };
+      const updateProject: Project = {
+        ...action.payload.project,
+        lists: state.currentProject.lists,
+        complete: state.currentProject.complete,
+      };
+
       const projects = state.projects.map((project) => {
         if (project.id === state.activeProjectId) {
-          return action.payload.project;
+          return updateProject;
         }
         return project;
       });
@@ -107,7 +116,7 @@ export const TaskReducer = (
       return {
         ...state,
         projects,
-        currentProject,
+        currentProject: updateProject,
         projectModal: false,
         projectForm: intialProjectForm,
       };
@@ -125,60 +134,91 @@ export const TaskReducer = (
   }
 
   if (action.type === "add-task") {
-    // Edit task.
-    if (state.activeTaskId) {
-      return {
-        ...state,
-        taskModal: false,
-        taskForm: initialTaskForm,
-      };
+    // Setup & Fixtures
+    const { lists } = state.currentProject;
+    const currentListIndex: number = lists.findIndex(
+      (list) => list.id === state.activeListId
+    );
+
+    if (currentListIndex === -1) {
+      return state;
     }
 
-    // Add a new Task.
-    else {
-      const { lists } = state.currentProject;
-      const currentListIndex: number = lists.findIndex(
-        (list) => list.id === state.activeListId
-      );
+    const currentList: List = lists[currentListIndex];
 
-      if (currentListIndex === -1) {
-        return state;
-      }
+    let updatedList: List;
+    let updatedLists: List[];
+    let currentProject: Project;
+    let projects: Project[];
 
-      const currentList: List = lists[currentListIndex];
+    // Edit a task.
+    if (state.activeTaskId && state.activeListId) {
+      const updatedTasks: Task[] = currentList.tasks.map((task) => {
+        if (task.id === state.activeTaskId) {
+          return action.payload.task;
+        }
+        return task;
+      });
 
-      const updatedList: List = {
+      updatedList = {
         ...currentList,
-        tasks: [...currentList.tasks, action.payload.task],
+        tasks: updatedTasks,
       };
 
-      const updatedLists: List[] = [
+      updatedLists = [
         ...lists.slice(0, currentListIndex),
         updatedList,
         ...lists.slice(currentListIndex + 1),
       ];
 
-      const currentProject = {
+      currentProject = {
         ...state.currentProject,
         lists: updatedLists,
       };
 
-      const projects = state.projects.map((project) => {
+      projects = state.projects.map((project) => {
         if (project.id === currentProject.id) {
           return currentProject;
         }
         return project;
       });
-
-      return {
-        ...state,
-        taskModal: false,
-        taskForm: initialTaskForm,
-        activeTaskId: "",
-        currentProject,
-        projects,
-      };
     }
+
+    // Add a new Task.
+    else {
+      updatedList = {
+        ...currentList,
+        tasks: [...currentList.tasks, action.payload.task],
+      };
+
+      updatedLists = [
+        ...lists.slice(0, currentListIndex),
+        updatedList,
+        ...lists.slice(currentListIndex + 1),
+      ];
+
+      currentProject = {
+        ...state.currentProject,
+        lists: updatedLists,
+      };
+
+      projects = state.projects.map((project) => {
+        if (project.id === currentProject.id) {
+          return currentProject;
+        }
+        return project;
+      });
+    }
+
+    // return new state.
+    return {
+      ...state,
+      taskModal: false,
+      taskForm: initialTaskForm,
+      activeTaskId: "",
+      currentProject,
+      projects,
+    };
   }
 
   if (action.type === "current-project") {
@@ -382,9 +422,14 @@ export const TaskReducer = (
   }
 
   if (action.type === "open-project-modal") {
+    const projectForm: NewProject = {
+      ...state.currentProject,
+    };
+
     return {
       ...state,
       projectModal: true,
+      projectForm,
     };
   }
 
@@ -393,12 +438,7 @@ export const TaskReducer = (
       return {
         ...state,
         projectModal: false,
-        projectForm: {
-          name: state.currentProject.name,
-          description: state.currentProject.description,
-          collaborators: state.currentProject.collaborators,
-          endDate: state.currentProject.endDate,
-        },
+        projectForm: intialProjectForm,
       };
     }
 
@@ -420,7 +460,38 @@ export const TaskReducer = (
     return {
       ...state,
       taskModal: false,
+      taskForm: initialTaskForm,
       activeListId: "",
+      activeTaskId: "",
+    };
+  }
+
+  if (action.type === "set-active-task") {
+    const { lists } = state.currentProject;
+    const currentListIndex: number = lists.findIndex(
+      (list) => list.id === action.payload.listId
+    );
+
+    if (currentListIndex === -1) {
+      return state;
+    }
+
+    const currentList: List = lists[currentListIndex];
+    const currentTaskIndex: number = currentList.tasks.findIndex(
+      (task) => task.id === action.payload.taskId
+    );
+    const currentTask: Task = currentList.tasks[currentTaskIndex];
+    const taskForm: NewTask = {
+      description: currentTask.description,
+      title: currentTask.title,
+    };
+
+    return {
+      ...state,
+      activeTaskId: action.payload.taskId,
+      activeListId: action.payload.listId,
+      taskForm,
+      taskModal: true,
     };
   }
 
