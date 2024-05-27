@@ -105,6 +105,7 @@ export default function ProjectModal() {
             value={projectForm.endDate}
             onChange={handleProjectForm}
           />
+          <label htmlFor="endDate" className="label">End Date</label>
         </div>
 
         {/* TODO: Implement a menu for filtering users by name */}
