@@ -1,10 +1,9 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BiX, BiPlus } from "react-icons/bi";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
-import ErrorMessage from "./ErrorMessage";
 import { initialList } from "../data";
 import type { Collaborator } from "../types";
 import "../styles/ProjectModal.css";
@@ -13,23 +12,21 @@ export default function ProjectModal() {
   //#region States
 
   const {
-    addProject,
+    projects,
     projectModal,
-    closeProjectModal,
-    handleProjectForm,
     projectForm,
-    addCollaborator,
-    removeCollaborator,
     currentProject,
     activeProjectId,
-    projects,
+    addProject,
+    addCollaborator,
     setCurrentProjectForm,
+    removeCollaborator,
+    handleProjectForm,
+    closeProjectModal,
   } = useTask();
 
   const [inputCollaborators, setInputCollaborators] =
     useState<Collaborator["username"]>("");
-
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const hasCollaborators = useMemo(
     () => projectForm.collaborators.length > 0,
@@ -37,8 +34,6 @@ export default function ProjectModal() {
   );
 
   const isUpdate = useMemo(() => activeProjectId !== "", [currentProject]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (activeProjectId) {
@@ -56,22 +51,21 @@ export default function ProjectModal() {
 
   //#region Functions
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    try {
-      if (Object.values(projectForm).includes("")) {
-        throw new Error("Please ensure all fields are filled out correctly.");
-      }
-      addProject({ ...projectForm, id: uuidv4(), complete: false, lists: initialList });
-      setInputCollaborators("");
-      navigate("/workspace");
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        console.log(error);
-      }
+
+    if (Object.values(projectForm).includes("")) {
+      toast.error("Please fill out all fields.");
+      return;
     }
+    addProject({
+      ...projectForm,
+      id: uuidv4(),
+      complete: false,
+      lists: initialList,
+    });
+    setInputCollaborators("");
+    toast.success("Project created correctly, feel free creating new tasks.");
   }
 
   //#endregion
@@ -82,7 +76,6 @@ export default function ProjectModal() {
         {isUpdate ? "Edit Project" : "New Project"}
       </h2>
       <form className="form grid" onSubmit={handleSubmit}>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <div className="field">
           <input
             type="text"

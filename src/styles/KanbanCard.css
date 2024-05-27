@@ -1,4 +1,5 @@
 .kanban__card {
+  position: relative;
   background-color: var(--body-color);
   padding: 0.2rem;
   border-radius: 0.3rem;
@@ -21,4 +22,48 @@
   padding: 3px;
   width: 20%;
   border-radius: 0.3rem;
+}
+
+.kanban__options {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.kanban__options:hover {
+  cursor: pointer;
+}
+
+.kanban__options-display {
+  position: absolute;
+  right: -25px;
+  top: 30px;
+  width: 100px;
+  height: 80px;
+  border: 1px solid var(--first-color);
+  background-color: var(--container-color);
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  z-index: var(--z-back);
+  opacity: 0;
+  transition: opacity 0.2s, z-index 0.2s;
+}
+
+.kanban__options-display.show {
+  z-index: var(--z-fixed);
+  opacity: 1;
+}
+
+.kanban__display-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 3px;
+}
+
+.kanban__display-action:hover {
+  cursor: pointer;
+  background-color: #cfcfcf;
 }

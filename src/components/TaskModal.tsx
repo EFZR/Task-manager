@@ -2,8 +2,8 @@ import { FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useTask from "../hooks/useTask";
 import Modal from "./Modal";
-import ErrorMessage from "./ErrorMessage";
 import "../styles/TaskModal.css";
+import { toast } from "react-toastify";
 
 export default function TaskModal() {
   const {
@@ -16,9 +16,14 @@ export default function TaskModal() {
     taskForm,
   } = useTask();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
+    if (Object.values(taskForm).includes("")) {
+      toast.error("Please fill out all fields.");
+      return;
+    }
     addTask({ ...taskForm, id: uuidv4() });
+    toast.success("Task Created Succesfully.");
   }
 
   return (

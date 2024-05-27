@@ -96,7 +96,8 @@ export const TaskReducer = (
   if (action.type === "add-project") {
     // Edit project
     if (state.activeProjectId) {
-      const updProjects = state.projects.map((project) => {
+      const currentProject = { ...action.payload.project };
+      const projects = state.projects.map((project) => {
         if (project.id === state.activeProjectId) {
           return action.payload.project;
         }
@@ -105,10 +106,9 @@ export const TaskReducer = (
 
       return {
         ...state,
-        projects: updProjects,
+        projects,
+        currentProject,
         projectModal: false,
-        currentProject: action.payload.project,
-        activeProjectId: action.payload.project.id,
         projectForm: intialProjectForm,
       };
     }
@@ -119,19 +119,13 @@ export const TaskReducer = (
         ...state,
         projects: [...state.projects, action.payload.project],
         projectModal: false,
-        currentProject: action.payload.project,
-        activeProjectId: action.payload.project.id,
-        projectForm: {
-          name: action.payload.project.name,
-          endDate: action.payload.project.endDate,
-          collaborators: action.payload.project.collaborators,
-          description: action.payload.project.description,
-        },
+        projectForm: intialProjectForm,
       };
     }
   }
 
   if (action.type === "add-task") {
+    // Edit task.
     if (state.activeTaskId) {
       return {
         ...state,
@@ -164,15 +158,25 @@ export const TaskReducer = (
         ...lists.slice(currentListIndex + 1),
       ];
 
+      const currentProject = {
+        ...state.currentProject,
+        lists: updatedLists,
+      };
+
+      const projects = state.projects.map((project) => {
+        if (project.id === currentProject.id) {
+          return currentProject;
+        }
+        return project;
+      });
+
       return {
         ...state,
         taskModal: false,
         taskForm: initialTaskForm,
         activeTaskId: "",
-        currentProject: {
-          ...state.currentProject,
-          lists: updatedLists,
-        },
+        currentProject,
+        projects,
       };
     }
   }
@@ -231,14 +235,18 @@ export const TaskReducer = (
   if (action.type === "on-drag-end") {
     const { destination, source, draggableId } = action.payload.result;
     const { lists } = state.currentProject;
+    let updatedLists: List[];
 
-    if (!destination) return state;
+    if (!destination) {
+      return state;
+    }
 
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
-    )
+    ) {
       return state;
+    }
 
     const startList: List | undefined = lists.find(
       (list) => list.id === source.droppableId
@@ -251,6 +259,7 @@ export const TaskReducer = (
       return state;
     }
 
+    // Moving a task in the same list
     if (startList === endList) {
       const currentList: List | undefined = lists.find(
         (list) => list.id === source.droppableId
@@ -271,62 +280,66 @@ export const TaskReducer = (
         tasks: newTasksId,
       };
 
-      const updatedLists: List[] = lists.map((list) => {
+      updatedLists = lists.map((list) => {
         if (list.id === newCurrentList.id) {
           return newCurrentList;
         }
         return list;
       });
+    }
 
-      return {
-        ...state,
-        currentProject: {
-          ...state.currentProject,
-          lists: updatedLists,
-        },
+    // Moving a task from one list to other.
+    else {
+      const startTasks: Task[] = [...startList.tasks];
+      const task: Task | undefined = startTasks.find(
+        (task) => task.id === draggableId
+      );
+      startTasks.splice(source.index, 1);
+      const newStartList: List = {
+        ...startList,
+        tasks: startTasks,
       };
-    }
 
-    // Moving from one list to other
-    const startTasks: Task[] = startList.tasks;
-    const task: Task | undefined = startTasks.find(
-      (task) => task.id === draggableId
-    );
-    startTasks.splice(source.index, 1);
-    const newStartList: List = {
-      ...startList,
-      tasks: startTasks,
-    };
-
-    if (!task) {
-      return state;
-    }
-
-    const endTasks: Task[] = endList.tasks;
-    endTasks.splice(destination.index, 0, task);
-    const newFinishList: List = {
-      ...endList,
-      tasks: endTasks,
-    };
-
-    const updatedLists: List[] = state.currentProject.lists.map((list) => {
-      if (list.id === newStartList.id) {
-        return newStartList;
+      if (!task) {
+        return state;
       }
 
-      if (list.id === newFinishList.id) {
-        return newFinishList;
-      }
+      const endTasks: Task[] = [...endList.tasks];
+      endTasks.splice(destination.index, 0, task);
+      const newFinishList: List = {
+        ...endList,
+        tasks: endTasks,
+      };
 
-      return list;
+      updatedLists = state.currentProject.lists.map((list) => {
+        if (list.id === newStartList.id) {
+          return newStartList;
+        }
+
+        if (list.id === newFinishList.id) {
+          return newFinishList;
+        }
+
+        return list;
+      });
+    }
+
+    const currentProject = {
+      ...state.currentProject,
+      lists: updatedLists,
+    };
+
+    const projects = state.projects.map((project) => {
+      if (currentProject.id === project.id) {
+        return currentProject;
+      }
+      return project;
     });
 
     return {
       ...state,
-      currentProject: {
-        ...state.currentProject,
-        lists: updatedLists,
-      },
+      currentProject,
+      projects,
     };
   }
 
