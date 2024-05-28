@@ -9,6 +9,7 @@ import {
   Task,
   NewTask,
 } from "../types";
+import { formatInputDate } from "../helpers";
 
 // TODO: Establish a relationship between each collaborator and their corresponding user entity
 
@@ -66,7 +67,7 @@ export const intialProjectForm: NewProject = {
   name: "",
   collaborators: [],
   description: "",
-  endDate: "",
+  endDate: formatInputDate(new Date()),
 };
 
 export const initialProject: Project = {
